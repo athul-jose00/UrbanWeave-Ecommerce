@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { FaRegCommentDots, FaTimes } from "react-icons/fa";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Chatbot = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hi! How can I help you today?" },
@@ -35,6 +37,11 @@ const Chatbot = () => {
     setTimeout(() => {
       botResponse(userMessage.text);
     }, 800);
+  };
+
+  const handleLinkClick = (path) => {
+    navigate(path);
+    setIsOpen(false); // Close chatbot when navigating
   };
 
   const botResponse = async (userText) => {
@@ -130,7 +137,6 @@ const Chatbot = () => {
     const filtered = products.filter((prod) => prod.category === category);
     
     if (filtered.length > 0) {
-      
       const shuffled = [...filtered].sort(() => 0.5 - Math.random());
       const recommendations = shuffled.slice(0, 3);
       
@@ -158,7 +164,6 @@ const Chatbot = () => {
 
   return (
     <>
-      
       <div
         className="fixed bottom-6 right-7 z-50 bg-black text-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-gray-800 transition"
         onClick={() => setIsOpen(!isOpen)}
@@ -176,7 +181,7 @@ const Chatbot = () => {
           <div 
             ref={chatContainerRef}
             className="flex-1 p-4 space-y-2 overflow-y-auto"
-            style={{ maxHeight: "300px" }} // Scrollable area
+            style={{ maxHeight: "300px" }}
           >
             {messages.map((msg, idx) => (
               <div
@@ -191,14 +196,12 @@ const Chatbot = () => {
                   }`}
                 >
                   {msg.link ? (
-                    <a 
-                      href={msg.link} 
-                      className="underline text-blue-400 hover:text-blue-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button 
+                      onClick={() => handleLinkClick(msg.link)}
+                      className="underline text-blue-400 hover:text-blue-300 cursor-pointer"
                     >
                       {msg.text}
-                    </a>
+                    </button>
                   ) : (
                     msg.text
                   )}

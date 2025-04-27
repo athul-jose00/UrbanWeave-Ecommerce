@@ -27,11 +27,13 @@ const TrackOrder = () => {
           { headers: { token } }
         );
 
-        console.log(res.data.order);
+        
 
         if (res.data.success) {
           setStatus(res.data.order.status);
           setOrderDetails(res.data.order);
+          console.log(orderDetails);
+
         }
       } catch (error) {
         console.log("Error fetching order:", error);
@@ -83,14 +85,37 @@ const TrackOrder = () => {
       </div>
 
       {orderDetails && (
-        <div className="text-gray-700 bg-gray-50 rounded-xl p-6 shadow">
-          <h2 className="text-lg font-medium mb-2">Order Details</h2>
-          <p><strong>Order ID:</strong> {orderDetails._id}</p>
-          <p><strong>Amount:</strong> ₹{orderDetails.amount}</p>
-          <p><strong>Payment Method:</strong> {orderDetails.paymentMethod}</p>
-          <p><strong>Status:</strong> {orderDetails.status}</p>
-        </div>
-      )}
+  <div className="text-gray-700 bg-gray-50 rounded-xl p-6 shadow space-y-6">
+    <div>
+      <h2 className="text-lg font-medium mb-2">Order Details</h2>
+      <p><strong>Order ID:</strong> {orderDetails._id}</p>
+      <p><strong>Amount:</strong> ₹{orderDetails.amount}</p>
+      <p><strong>Payment Method:</strong> {orderDetails.paymentMethod}</p>
+      <p><strong>Status:</strong> {orderDetails.status}</p>
+    </div>
+
+    <div>
+      <h2 className="text-lg font-medium mb-2">Items:</h2>
+      <div className="space-y-4">
+        {orderDetails.items.map((item, idx) => (
+          <div key={idx} className="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+            <img
+              src={item.image[0]}  // <-- Corrected here!
+              alt={item.name}
+              className="w-20 h-20 object-cover rounded-md"
+            />
+            <div>
+              <p className="font-semibold">{item.name}</p>
+              <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+              <p className="text-sm text-gray-600">Size: {item.size}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

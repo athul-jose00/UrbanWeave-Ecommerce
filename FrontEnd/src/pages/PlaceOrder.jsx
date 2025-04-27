@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-
 import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
@@ -18,6 +17,7 @@ const PlaceOrder = () => {
     setCartItems,
     products,
   } = useContext(ShopContext);
+
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -30,9 +30,8 @@ const PlaceOrder = () => {
   const total = subtotal + deliveryCharge;
 
   const onChangeHandler = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setFormData((data) => ({ ...data, [name]: [value] }));
+    const { name, value } = e.target;
+    setFormData((data) => ({ ...data, [name]: value })); // <- fixed (was adding [] around value)
   };
 
   const onSubmitHandler = async (e) => {
@@ -60,39 +59,31 @@ const PlaceOrder = () => {
         amount: getCartAmount(),
       };
 
-      switch (method) {
-        case "COD":
-          {
-            const response = await axios.post(
-              backendURL + "/api/order/place",
-              orderData,
-              { headers: { token } }
-            );
-
-            if (response.data.success) {
-              setCartItems({});
-              toast.success("🎉 Order Placed Successfully");
-              setTimeout(navigate("/orders"), 1000);
-            } else {
-              toast.error(response.data.message);
-            }
-          }
-          break;
-
-        case "Stripe":
-          {
-            const responseStripe=await axios.post(backendURL+'/api/order/stripe',orderData,{headers:{token}})
-            if(responseStripe.data.success){
-              const {session_url}=responseStripe.data;
-              window.location.replace(session_url);
-            }else{
-              toast.error(responseStripe.data.message);
-            }
-          }
-          break;
-
-        default:
-          break;
+      if (method === "COD") {
+        const response = await axios.post(
+          backendURL + "/api/order/place",
+          orderData,
+          { headers: { token } }
+        );
+        if (response.data.success) {
+          setCartItems({});
+          toast.success("🎉 Order Placed Successfully");
+          setTimeout(() => navigate("/orders"), 1000); // <- fixed navigate timeout
+        } else {
+          toast.error(response.data.message);
+        }
+      } else if (method === "Stripe") {
+        const responseStripe = await axios.post(
+          backendURL + "/api/order/stripe",
+          orderData,
+          { headers: { token } }
+        );
+        if (responseStripe.data.success) {
+          const { session_url } = responseStripe.data;
+          window.location.replace(session_url);
+        } else {
+          toast.error(responseStripe.data.message);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -102,18 +93,18 @@ const PlaceOrder = () => {
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="px-6 md:px-[7vw] py-10 text-black group"
+      className="px-5 md:px-[7vw] py-10 text-black group"
     >
-      <div className=" mb-10">
-        <h2 className="text-4xl font-semibold mb-2 relative ">
+      <div className="mb-10 text-center md:text-left">
+        <h2 className="text-4xl font-semibold mb-2 relative">
           Place Your Order
-          <span className="block h-1 w-44 bg-black mt-2 ml-12 rounded-full transition-transform duration-300 group-hover:scale-x-145" />
+          <span className="block h-1 w-32 md:w-44 bg-black mt-2 mx-auto md:ml-0 rounded-full transition-transform duration-300 group-hover:scale-x-110" />
         </h2>
       </div>
 
       {/* Delivery Info */}
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-7 mb-8">
-        <h3 className="text-2xl font-medium  underline underline-offset-5 decoration-2 mb-5">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 mb-8">
+        <h3 className="text-2xl font-medium underline underline-offset-4 decoration-2 mb-5">
           Delivery Information
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -140,12 +131,12 @@ const PlaceOrder = () => {
             fullWidth
             multiline
             rows={3}
-            className="m-0"
             variant="outlined"
             name="address"
             value={formData.address}
             onChange={onChangeHandler}
             required
+            className="md:col-span-2"
           />
           <TextField
             label="City"
@@ -164,13 +155,13 @@ const PlaceOrder = () => {
         <h3 className="text-2xl font-medium mb-4 underline underline-offset-4 decoration-2">
           Payment Method
         </h3>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div
             onClick={() => setMethod("Stripe")}
-            className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+            className="flex items-center gap-3 border p-2 px-4 cursor-pointer rounded-xl hover:shadow-md"
           >
             <div
-              className={`min-w-3.5 h-3.5 border rounded-full ${
+              className={`min-w-4 h-4 border rounded-full ${
                 method === "Stripe" ? "bg-green-500 border-green-500" : ""
               }`}
             ></div>
@@ -178,22 +169,23 @@ const PlaceOrder = () => {
           </div>
           <div
             onClick={() => setMethod("COD")}
-            className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+            className="flex items-center gap-3 border p-2 px-4 cursor-pointer rounded-xl hover:shadow-md"
           >
             <div
-              className={`min-w-3.5 h-3.5 border rounded-full ${
-                method === "COD" ? "bg-green-500 " : ""
+              className={`min-w-4 h-4 border rounded-full ${
+                method === "COD" ? "bg-green-500" : ""
               }`}
             ></div>
             <p className="text-gray-800 text-sm font-medium mx-4">
-              CASH ON DELIVERY
+              Cash On Delivery
             </p>
           </div>
         </div>
       </div>
 
+      {/* Billing Summary */}
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-8 mb-8">
-        <h3 className="text-2xl font-medium mb-7 underline underline-offset-4 decoration-2">
+        <h3 className="text-2xl font-medium mb-6 underline underline-offset-4 decoration-2">
           Billing Summary
         </h3>
         <div className="space-y-4 text-gray-800 text-base">
@@ -205,14 +197,15 @@ const PlaceOrder = () => {
             <span>Delivery Charges:</span>
             <span>{deliveryCharge === 0 ? "Free" : `₹${deliveryCharge}`}</span>
           </div>
-          <div className="flex justify-between font-semibold text-black text-lg mt-2 border-t pt-2">
+          <div className="flex justify-between font-semibold text-black text-lg mt-3 pt-2 border-t">
             <span>Total:</span>
             <span>₹{total.toLocaleString()}</span>
           </div>
         </div>
       </div>
 
-      <div className="text-right  ">
+      {/* Submit Button */}
+      <div className="flex justify-center md:justify-end">
         <Button
           variant="contained"
           type="submit"
@@ -225,17 +218,16 @@ const PlaceOrder = () => {
             fontSize: "1rem",
             textTransform: "capitalize",
             borderRadius: "200px",
-            width: "20em",
+            width: "16em",
             display: "flex",
             alignItems: "center",
             gap: "0.5rem",
             marginTop: "1em",
-            marginLeft: "auto",
           }}
         >
           <span className="flex text-lg items-center gap-2 transition-transform duration-300 group-hover:scale-110">
             Place Order
-            <span className="inline-block transition-transform duration-300 group-hover:translate-x-4 text-2xl">
+            <span className="inline-block transition-transform duration-300 group-hover:translate-x-2 text-2xl">
               <ArrowForwardIcon fontSize="inherit" />
             </span>
           </span>

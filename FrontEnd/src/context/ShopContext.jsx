@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 
 
+
 export const ShopContext=createContext(null);
 
 const ShopContextProvider=(props)=>{
@@ -18,7 +19,7 @@ const ShopContextProvider=(props)=>{
   useEffect(()=>{
     
     const fetchProducts=async()=>{
-      const res=await axios.get("http://localhost:3000/view");
+      const res=await axios.get(backendURL+"/view");
       setProducts(res.data);
       
 

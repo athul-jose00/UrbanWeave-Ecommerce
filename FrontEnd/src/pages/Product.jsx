@@ -5,19 +5,13 @@ import { ShopContext } from '../context/ShopContext';
 
 const Product = () => {
   const { productId } = useParams();
-  const [products, setProducts] = useState([]);
+  
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState('');
   const [selectedSize,setSelectedSize]=useState('');
-  const{addToCart}=useContext(ShopContext);
+  const{addToCart,products}=useContext(ShopContext);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await axios.get("http://localhost:3000/view");
-      setProducts(res.data);
-    };
-    fetchProducts();
-  }, []);
+  
 
   useEffect(() => {
     const product = products.find((item) => item._id === productId);

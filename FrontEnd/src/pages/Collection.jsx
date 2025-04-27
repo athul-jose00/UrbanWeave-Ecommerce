@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import { ShopContext } from "../context/ShopContext";
 
 
 const Collections = () => {
-  const [products, setProducts] = useState([]);
+  
   const [filtered, setFiltered] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [subCategoryFilter, setSubCategoryFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const { products } = useContext(ShopContext);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await axios.get("http://localhost:3000/view");
-      setProducts(res.data);
-      setFiltered(res.data);
-    };
-    fetchProducts();
-  }, []);
+  
 
   useEffect(() => {
     let updated = [...products];

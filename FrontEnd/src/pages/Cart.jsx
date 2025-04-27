@@ -8,11 +8,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
 const Cart = () => {
-  const { cartItems, updateQty,navigate } = useContext(ShopContext);
+  const { cartItems, updateQty, navigate } = useContext(ShopContext);
   const [products, setProducts] = useState([]);
   const [cartData, setCartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const isCartEmpty = cartData.length === 0;
 
   useEffect(() => {
@@ -25,24 +25,22 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    if (products.length>0) {
+    if (products.length > 0) {
       const tempData = [];
-    for (const product in cartItems) {
-      for (const size in cartItems[product]) {
-        if (cartItems[product][size]) {
-          tempData.push({
-            _id: product,
-            size: size,
-            quantity: cartItems[product][size],
-          });
+      for (const product in cartItems) {
+        for (const size in cartItems[product]) {
+          if (cartItems[product][size]) {
+            tempData.push({
+              _id: product,
+              size: size,
+              quantity: cartItems[product][size],
+            });
+          }
         }
       }
+      setCartData(tempData);
     }
-    setCartData(tempData);
-      
-    }
-    
-  }, [cartItems,products]);
+  }, [cartItems, products]);
 
   if (isLoading) {
     return (
@@ -60,17 +58,14 @@ const Cart = () => {
           <span
             className="block h-1 w-22 bg-black mt-2 ml-9 rounded-full transition-transform duration-300 
               group-hover: scale-x-140" 
-            
           />
         </h2>
       </div>
 
       {isCartEmpty && (
-        <div className="text-center py-24 text-gray-800 ">
+        <div className="text-center py-24 text-gray-800">
           <h3 className="text-2xl font-medium mb-4">Your cart is empty.</h3>
-          <p className="text-gray-700 mb-6">
-            Looks like you haven't added anything yet.
-          </p>
+          <p className="text-gray-700 mb-6">Looks like you haven't added anything yet.</p>
           <Button
             component={Link}
             to="/collection"
@@ -104,7 +99,7 @@ const Cart = () => {
                 <div
                   key={index}
                   className="flex flex-col sm:flex-row justify-between items-center border p-4 rounded-xl shadow-sm hover:shadow-md transition relative"
-                  >
+                >
                   <div className="flex items-center gap-4 w-full sm:w-[60%]">
                     <img
                       className="w-20 h-20 object-cover rounded-xl border"
@@ -154,10 +149,8 @@ const Cart = () => {
             <div className="w-full max-w-md">
               <CartTotal />
               <Button
-                
-                
                 variant="contained"
-                onClick={()=>navigate('/place-order')}
+                onClick={() => navigate("/place-order")}
                 className="group"
                 sx={{
                   backgroundColor: "black",
@@ -168,7 +161,8 @@ const Cart = () => {
                   fontSize: "1rem",
                   textTransform: "capitalize",
                   borderRadius: "200px",
-                  width: "28em",
+                  width: "100%", 
+                  maxWidth: "28em", 
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
