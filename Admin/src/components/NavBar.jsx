@@ -1,5 +1,5 @@
 import { Menu as MenuIcon, Logout as LogoutIcon } from '@mui/icons-material';
-import Sidebar from './Sidebar';
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const NavBar = ({setToken}) => {
           <h1 className="text-xl font-bold tracking-wide relative ">
             UrbanWeave Admin Panal
             
-            <span className="absolute  bottom-0 left-0 w-full h-0.5 bg-white  "></span>
+            <span className="absolute  bottom-0 left-0 w-full h-0.5 bg-purple-200  "></span>
           </h1>
         </div>
       </Link>

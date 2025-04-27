@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Footer = () => {
   const onSubmitHandler=(event)=>{
     event.preventDefault();
+    toast.success("Successfully Subscribed!!!")
   }
 
 
@@ -24,8 +26,8 @@ const Footer = () => {
       <ul className="space-y-2 text-sm">
         <li><Link to="/about" className="hover:text-black transition">About Us</Link></li>
         <li><Link to="/contact" className="hover:text-black transition">Contact</Link></li>
-        <li><Link to="/privacy" className="hover:text-black transition">Privacy Policy</Link></li>
-        <li><Link to="/terms" className="hover:text-black transition">Terms & Conditions</Link></li>
+        <li><Link to="/about" className="hover:text-black transition">Privacy Policy</Link></li>
+        
       </ul>
     </div>
 

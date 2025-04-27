@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import userModel from "../model/userModel.js";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
+import { v2 as cloudinary } from "cloudinary";
+import orderModel from "../model/orderModel.js";
 
 // Generate email verification token
 const generateVerificationToken = () => {
@@ -159,15 +161,13 @@ const verifyEmail = async (req, res) => {
     user.verificationTokenExpires = undefined;
     await user.save();
 
-    // Generate JWT token for automatic login
     const authToken = createToken(user._id);
 
-    res.json({
-      success: true,
-      token: authToken, // Send JWT to client
-      userId: user._id, // Optional: Send user ID
-      message: "Email verified successfully! You are now logged in.",
-    });
+    res.redirect(
+      `http://localhost:5173/login?verified=true&message=${encodeURIComponent(
+        "Email verified successfully! Please log in."
+      )}`
+    );
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -177,19 +177,240 @@ const verifyEmail = async (req, res) => {
 //Route for Admin Login
 const adminLogin = async (req, res) => {
   try {
-    const {email,password}=req.body;
-    if (email===process.env.ADMIN_EMAIL && password===process.env.ADMIN_PASSWORD) {
-      const token=jwt.sign(email+password,process.env.JWT_SECRET);
-      res.json({success:true,token});
-      
-    }else{
-      res.json({success:false,message:"Invalid Credentials"});
+    const { email, password } = req.body;
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = jwt.sign(email + password, process.env.JWT_SECRET);
+      res.json({ success: true, token });
+    } else {
+      res.json({ success: false, message: "Invalid Credentials" });
     }
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
-  
-    
   }
 };
-export { loginUser, registerUser, adminLogin, verifyEmail };
+
+// Get all users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find().select("-password");
+    res.json({ success: true, users });
+  } catch (error) {
+    res.json({ success: false, message: "Error fetching users" });
+  }
+};
+
+// Get single user by ID
+const getUserById = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await userModel.findById(userId).select("-password");
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error fetching user" });
+  }
+};
+
+// Update user
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, email, password } = req.body;
+
+  try {
+    const updateData = { name, email };
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    const updatedUser = await userModel
+      .findByIdAndUpdate(id, updateData, { new: true })
+      .select("-password");
+
+    if (!updatedUser) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.json({ success: false, message: "Error updating user" });
+  }
+};
+
+// Delete user
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedUser = await userModel.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    res.json({ success: false, message: "Error deleting user" });
+  }
+};
+
+
+/*
+const addProfileImg = async (req, res) => {
+  try {
+    const profileImg = req.file; // since you're using upload.single("profileImg")
+    if (!profileImg) {
+      return res.json({ success: false, message: "No image file provided" });
+    }
+
+    const result = await cloudinary.uploader.upload(profileImg.path, {
+      resource_type: "image",
+    });
+    
+    
+    const imageUrl = result.secure_url;
+
+    await userModel.findByIdAndUpdate(
+      req.body.id,
+      { profileImage: imageUrl },
+    );
+    console.log("Image URL:", imageUrl);
+console.log("User ID:", req.body.userId);
+
+    res.json({
+      success: true,
+      message: "Profile image updated successfully",
+     
+    });
+  } catch (error) {
+    console.log("Upload error:", error);
+    res.json({ success: false, message: "Server error", error: error.message });
+  }
+};
+*/
+
+
+
+
+
+const addProfileImg = async (req, res) => {
+  try {
+    const { userId } = req;
+
+    if (!userId) {
+      return res.json({ success: false, message: "User ID not found" });
+    }
+
+    const userData = await userModel.findById(userId);
+    if (!userData) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    const file = req.file;
+    if (!file) {
+      return res.json({ success: false, message: "No file uploaded" });
+    }
+
+    const uploadResult = await cloudinary.uploader.upload(file.path, {
+      resource_type: "image",
+    });
+
+    const result = uploadResult.secure_url;
+    const imgData = { profileImage: result };
+
+    await userModel.findByIdAndUpdate(userId, imgData);
+
+    console.log("Image URL:", result);
+    console.log("User ID:", userId);
+
+    res.json({
+      success: true,
+      message: "Profile image updated successfully",
+      imageUrl: result,
+    });
+  } catch (error) {
+    console.log("Upload error:", error);
+    res.json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+
+
+
+
+
+const getUserDetails = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId).select("-password");
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+
+export const getUserDashboard = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Fetch delivered orders only
+    const deliveredOrders = await orderModel.find({
+      userId: req.userId,
+      status: "Delivered",
+    }).sort({ date: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "User dashboard data fetched successfully",
+      data: {
+        user,
+        totalDeliveredOrders: deliveredOrders.length,
+        deliveredOrders,
+      },
+    });
+  } catch (error) {
+    console.error("Dashboard error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching user dashboard",
+    });
+  }
+};
+
+
+
+
+export {
+  loginUser,
+  registerUser,
+  adminLogin,
+  verifyEmail,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  addProfileImg,
+  getUserDetails
+  
+};

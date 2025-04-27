@@ -8,7 +8,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const Hero = () => {
   return (
-    <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-between px-7 md:px-[7vw] py-12 ">
+    <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-between px-7 md:px-[7vw] py-10 mt-[-50px]">
      
       <div className="w-full md:w-1/2 text-center md:text-left mb-10 md:mb-0">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">

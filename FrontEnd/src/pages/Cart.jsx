@@ -25,7 +25,8 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    const tempData = [];
+    if (products.length>0) {
+      const tempData = [];
     for (const product in cartItems) {
       for (const size in cartItems[product]) {
         if (cartItems[product][size]) {
@@ -38,7 +39,10 @@ const Cart = () => {
       }
     }
     setCartData(tempData);
-  }, [cartItems]);
+      
+    }
+    
+  }, [cartItems,products]);
 
   if (isLoading) {
     return (

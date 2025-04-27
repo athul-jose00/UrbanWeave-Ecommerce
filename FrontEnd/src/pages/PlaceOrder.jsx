@@ -1,44 +1,109 @@
 import React, { useContext, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  TextField,
-  
-} from "@mui/material";
+
+import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import axios from "axios";
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("COD");
-  const { getCartAmount } = useContext(ShopContext);
-  const [deliveryInfo, setDeliveryInfo] = useState({
+  const {
+    getCartAmount,
+    backendURL,
+    navigate,
+    token,
+    cartItems,
+    setCartItems,
+    products,
+  } = useContext(ShopContext);
+  const [formData, setFormData] = useState({
     name: "",
     address: "",
     city: "",
     phone: "",
   });
 
-  const navigate = useNavigate();
-  const subtotal = getCartAmount();
+  const subtotal = getCartAmount?.();
   const deliveryCharge = 0;
   const total = subtotal + deliveryCharge;
 
-  const handleOrder = () => {
-    const { name, address, city, phone } = deliveryInfo;
-    if (!name || !address || !city || !phone) {
-      toast.error("Please fill all delivery fields");
-      return;
-    }
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setFormData((data) => ({ ...data, [name]: [value] }));
+  };
 
-    toast.success("Order Placed Successfully 🎉");
-    setTimeout(() => navigate("/orders"), 2000);
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      let orderItems = [];
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            const itemInfo = structuredClone(
+              products.find((product) => product._id === items)
+            );
+            if (itemInfo) {
+              itemInfo.size = item;
+              itemInfo.quantity = cartItems[items][item];
+              orderItems.push(itemInfo);
+            }
+          }
+        }
+      }
+
+      let orderData = {
+        address: formData,
+        items: orderItems,
+        amount: getCartAmount(),
+      };
+
+      switch (method) {
+        case "COD":
+          {
+            const response = await axios.post(
+              backendURL + "/api/order/place",
+              orderData,
+              { headers: { token } }
+            );
+
+            if (response.data.success) {
+              setCartItems({});
+              toast.success("🎉 Order Placed Successfully");
+              setTimeout(navigate("/orders"), 1000);
+            } else {
+              toast.error(response.data.message);
+            }
+          }
+          break;
+
+        case "Stripe":
+          {
+            const responseStripe=await axios.post(backendURL+'/api/order/stripe',orderData,{headers:{token}})
+            if(responseStripe.data.success){
+              const {session_url}=responseStripe.data;
+              window.location.replace(session_url);
+            }else{
+              toast.error(responseStripe.data.message);
+            }
+          }
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    
-    <div className="px-6 md:px-[7vw] py-10 text-black group">
+    <form
+      onSubmit={onSubmitHandler}
+      className="px-6 md:px-[7vw] py-10 text-black group"
+    >
       <div className=" mb-10">
         <h2 className="text-4xl font-semibold mb-2 relative ">
           Place Your Order
@@ -56,19 +121,19 @@ const PlaceOrder = () => {
             label="Full Name"
             fullWidth
             variant="outlined"
-            value={deliveryInfo.name}
-            onChange={(e) =>
-              setDeliveryInfo({ ...deliveryInfo, name: e.target.value })
-            }
+            name="name"
+            value={formData.name}
+            onChange={onChangeHandler}
+            required
           />
           <TextField
             label="Phone Number"
             fullWidth
             variant="outlined"
-            value={deliveryInfo.phone}
-            onChange={(e) =>
-              setDeliveryInfo({ ...deliveryInfo, phone: e.target.value })
-            }
+            name="phone"
+            value={formData.phone}
+            onChange={onChangeHandler}
+            required
           />
           <TextField
             label="Full Address"
@@ -77,19 +142,19 @@ const PlaceOrder = () => {
             rows={3}
             className="m-0"
             variant="outlined"
-            value={deliveryInfo.address}
-            onChange={(e) =>
-              setDeliveryInfo({ ...deliveryInfo, address: e.target.value })
-            }
+            name="address"
+            value={formData.address}
+            onChange={onChangeHandler}
+            required
           />
           <TextField
             label="City"
             fullWidth
             variant="outlined"
-            value={deliveryInfo.city}
-            onChange={(e) =>
-              setDeliveryInfo({ ...deliveryInfo, city: e.target.value })
-            }
+            name="city"
+            value={formData.city}
+            onChange={onChangeHandler}
+            required
           />
         </div>
       </div>
@@ -101,19 +166,15 @@ const PlaceOrder = () => {
         </h3>
         <div className="flex gap-3">
           <div
-            onClick={() => setMethod("RazorPay")}
+            onClick={() => setMethod("Stripe")}
             className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
           >
             <div
               className={`min-w-3.5 h-3.5 border rounded-full ${
-                method === "RazorPay" ? "bg-green-500 border-green-500" : ""
+                method === "Stripe" ? "bg-green-500 border-green-500" : ""
               }`}
             ></div>
-            <img
-              className="h-5 mx-4"
-              src={assets.razorpay_logo}
-              alt="RazorPay"
-            />
+            <img className="h-5 mx-4" src={assets.stripe_logo} alt="Stripe" />
           </div>
           <div
             onClick={() => setMethod("COD")}
@@ -151,12 +212,10 @@ const PlaceOrder = () => {
         </div>
       </div>
 
-     
       <div className="text-right  ">
         <Button
           variant="contained"
-          
-          onClick={handleOrder}
+          type="submit"
           sx={{
             backgroundColor: "black",
             color: "white",
@@ -171,18 +230,18 @@ const PlaceOrder = () => {
             alignItems: "center",
             gap: "0.5rem",
             marginTop: "1em",
-            marginLeft:"auto"
+            marginLeft: "auto",
           }}
         >
           <span className="flex text-lg items-center gap-2 transition-transform duration-300 group-hover:scale-110">
-          Place Order
+            Place Order
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-4 text-2xl">
               <ArrowForwardIcon fontSize="inherit" />
             </span>
           </span>
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 

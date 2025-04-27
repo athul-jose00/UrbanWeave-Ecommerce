@@ -11,6 +11,9 @@ export const ShopContext=createContext(null);
 const ShopContextProvider=(props)=>{
   const [cartItems,setCartItems]=useState({});
   const [products, setProducts] = useState([]);
+  const[token,setToken]=useState('');
+  const backendURL=import.meta.env.VITE_BACKEND_URL;
+
 
   useEffect(()=>{
     
@@ -21,6 +24,8 @@ const ShopContextProvider=(props)=>{
 
     };
     fetchProducts();
+    
+    
 
   },[]);
 
@@ -56,7 +61,20 @@ const ShopContextProvider=(props)=>{
       cartData[itemId][size]=1
     }
     setCartItems(cartData);
-    toast.success("Added to Cart");
+    
+
+
+    if (token) {
+      try {
+        axios.post(backendURL+'/api/cart/add',{itemId,size},{headers:{token}})
+        toast.success("Added To Cart");
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+        
+      }
+      
+    }
 
   }
 useEffect(()=>{
@@ -85,7 +103,18 @@ useEffect(()=>{
   const updateQty=async(itemId,size,quantity)=>{
     let cartData=structuredClone(cartItems);
     cartData[itemId][size]=quantity;
-    setCartItems(cartData); 
+    setCartItems(cartData);
+    if (token) {
+      try {
+        axios.post(backendURL+'/api/cart/update',{itemId,size,quantity},{headers:{token}})
+        
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+        
+      }
+      
+    } 
 
   }
 
@@ -110,12 +139,35 @@ useEffect(()=>{
 
   }
 
+
+
+  const getUserCart=async(token)=>{
+    try {
+      const response=await axios.post(backendURL+'/api/cart/get',{},{headers:{token}})
+
+      if(response.data.success){
+          setCartItems(response.data.cartData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
 const navigate=useNavigate();
 
+useEffect(()=>{
+  if (!token && localStorage.getItem("token")) {
+    setToken(localStorage.getItem("token"))
+    getUserCart(localStorage.getItem("token"));
+    
+  }
+},[])
 
 
 
-  const value={cartItems,addToCart,getCartCount,updateQty,getCartAmount,navigate,products};
+
+  const value={cartItems,addToCart,getCartCount,updateQty,getCartAmount,navigate,products,token,setToken,backendURL,setCartItems};
 
 
 return(

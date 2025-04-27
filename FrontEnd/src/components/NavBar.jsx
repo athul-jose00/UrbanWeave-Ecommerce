@@ -1,14 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ShoppingCart, Menu as MenuIcon } from "@mui/icons-material";
 import { Link, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Box, Button, IconButton, Badge } from "@mui/material";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
   const location = useLocation();
-  const { getCartCount } = useContext(ShopContext);
+  const { getCartCount, navigate, token, setToken, setCartItems, backendURL } = useContext(ShopContext);
+
+  const logout = () => {
+    toast.success("Successfully Logged Out");
+    navigate("/");
+
+    setToken('');
+    setCartItems({});
+    localStorage.removeItem("token");
+  };
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
@@ -18,6 +30,28 @@ const Navbar = () => {
     { name: "ABOUT", path: "/about" },
     { name: "CONTACT", path: "/contact" },
   ];
+
+  useEffect(() => {
+    if (token) {
+      const fetchData = async () => {
+        try {
+          
+          const userRes = await 
+            axios.get(`${backendURL}/api/user/details`, { headers: { token } });
+            
+            
+          
+          if (userRes.data.success) setUserDetails(userRes.data.user);
+          
+          
+        } catch (err) {
+          console.error("Error fetching data:", err);
+          
+        } 
+      };
+      fetchData();
+    }
+  }, [token, backendURL,userDetails]);
 
   return (
     <AppBar
@@ -39,7 +73,7 @@ const Navbar = () => {
           height: "64px",
         }}
       >
-        {/* Logo */}
+        
         <Link to="/" style={{ textDecoration: "none" }}>
           <Box
             component="h1"
@@ -54,7 +88,7 @@ const Navbar = () => {
           </Box>
         </Link>
 
-        {/* Navigation Links */}
+       
         <Box
           sx={{
             display: { xs: "none", md: "flex" },
@@ -99,38 +133,51 @@ const Navbar = () => {
           ))}
         </Box>
 
-        {/* Cart and Profile */}
+       
         <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          {/* Cart Icon */}
           <IconButton
             component={Link}
-            to="/cart"
+            to={token ? "/cart" : "/login"}
             sx={{
               color: "black",
               "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
             }}
           >
-            <Badge badgeContent={getCartCount()} color="error">
+            <Badge badgeContent={token ? getCartCount() : null} color="error">
               <ShoppingCart />
             </Badge>
           </IconButton>
 
-          {/* Profile Dropdown */}
+         
           <div className="group relative">
-            <Link to="/login">
+            {token && userDetails ? (
               <img
+                onClick={() => navigate('/profile')}
+                className="w-[35px] h-full cursor-pointer rounded-full"
+                src={userDetails.profileImage || assets.profile_user}
+                alt="Profile"
+              />
+            ) : (
+              <img
+                onClick={() => token ? null : navigate('/login')}
                 className="w-[27px] cursor-pointer"
                 src={assets.profile_user}
                 alt="Profile"
               />
-            </Link>
-            <div className="group-hover:block hidden absolute right-[-20px] pt-4 z-10">
-              <div className="flex flex-col gap-2 w-36 py-3 px-2 bg-white text-gray-500 shadow-lg border border-gray-200 rounded-xl">
-                <p className="cursor-pointer hover:text-black hover:bg-gray-100   rounded-md ml-1">My Profile</p>
-                <p className="cursor-pointer hover:text-black hover:bg-gray-100  py-1 rounded-md ml-1">Orders</p>
-                <p className="cursor-pointer hover:text-black hover:bg-gray-100  py-1 rounded-md ml-1">Logout</p>
+            )}
+            {token && userDetails && (
+              <div className="group-hover:block hidden absolute right-[-20px] pt-4 z-10">
+                <div className="flex flex-col gap-2 w-36 py-3 px-2 bg-white text-gray-500 shadow-lg border border-gray-200 rounded-xl">
+                  <Link to='/profile'>
+                    <p className="cursor-pointer hover:text-black hover:bg-gray-100 rounded-md ml-1">My Profile</p>
+                  </Link>
+                  <Link to='/orders'>
+                    <p className="cursor-pointer hover:text-black hover:bg-gray-100 py-1 rounded-md ml-1">Orders</p>
+                  </Link>
+                  <p onClick={logout} className="cursor-pointer hover:text-black hover:bg-gray-100 py-1 rounded-md ml-1">Logout</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}

@@ -92,9 +92,11 @@ const Product = () => {
             </div>
           </div>
         )}
-  <p className="text-2xl text-gray-800 font-medium mb-6 ml-2">
-    {productData.price.toLocaleString()}
+  <p className="text-xl text-gray-800 font-small mb-6 ml-2">
+  <span>₹</span>
+  <span className='ml-1'>{productData.price.toLocaleString()}</span>
   </p>
+  
 
   
 

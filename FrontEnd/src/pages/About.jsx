@@ -1,5 +1,6 @@
 import React from 'react';
 import {assets} from '../assets/assets'
+import OurPolicy from '../components/OurPolicy';
 
 const About = () => {
   return (
@@ -52,18 +53,15 @@ const About = () => {
 
       
       <div className="text-center mt-32">
-        <h2 className="text-2xl font-semibold mb-4 underline underline-offset-4 decoration-2">Our Values</h2>
-        <p className="text-gray-600 mb-6 text-xl">
-          We stand for authenticity, creativity, and community. Our designs are a tribute to the diverse cultures and stories that make up the urban tapestry. We believe in sustainable practices and are committed to making a positive impact on both fashion and society.
-        </p>
-        <div className="flex justify-center">
-          <img
-            src="https://media.istockphoto.com/id/1305252434/vector/the-diverse-group-of-people-entrepreneurs-or-office-workers-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=bV8k8kMureOtnu_dd-Oz3v_taIai0ekTsA4gSaFHrVQ="
-            alt="Urban Style"
-            className="w-200 h-auto rounded-lg "
-          />
-        </div>
-      </div>
+  <h2 className="text-2xl font-semibold mb-4 underline underline-offset-4 decoration-2">Our Commitments</h2>
+  <p className="text-gray-600 mb-6 text-xl">
+    At Urban Weave, we prioritize quality, convenience, and customer satisfaction. Our promise is simple: premium craftsmanship, easy returns, and unwavering support whenever you need it.
+  </p>
+  <OurPolicy/>
+</div>
+
+
+      
     </div>
   );
 };

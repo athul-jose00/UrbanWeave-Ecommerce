@@ -9,11 +9,11 @@ import bin_icon from './bin_icon.png'
 import dropdown_icon from './dropdown_icon.png'
 import exchange_icon from './exchange_icon.png'
 import profile_icon from './profile_icon.png'
-import quality_icon from './quality_icon.png'
+import quality_icon from './image-removebg-preview_1.png'
 import search_icon from './search_icon.png'
 import star_dull_icon from './star_dull_icon.png'
 import star_icon from './star_icon.png'
-import support_img from './support_img.png'
+import support_img from './image-removebg-preview3.png'
 import menu_icon from './menu_icon.png'
 import about_img from './about_img.png'
 import contact_img from './contact_img.png'
@@ -22,6 +22,8 @@ import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
 import hero_image from './image.png'
 import about_img1 from './image-removebg-preview.png'
+import fast from './image-removebg-preview2.png'
+
 export const assets = {
     logo,
     about_img1,
@@ -43,7 +45,8 @@ export const assets = {
     stripe_logo,
     cross_icon,
     hero_image,
-    profile_user
+    profile_user,
+    fast
 }
 
 export const products=[

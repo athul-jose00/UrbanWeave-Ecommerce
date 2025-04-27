@@ -13,6 +13,10 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import ShopContextProvider from "./context/ShopContext";
 import { ToastContainer, Bounce } from 'react-toastify';
+import Verify from "./pages/Verify";
+import TrackOrder from "./pages/TrackOrder";
+import Profile from "./pages/Profile";
+import Chatbot from "./components/Chatbot";
 
 const App = () => {
   return (
@@ -33,6 +37,7 @@ transition={Bounce}
       
       <ShopContextProvider>
       <NavBar />
+      <Chatbot/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/collection" element={<Collection />} />
@@ -43,6 +48,10 @@ transition={Bounce}
           <Route path="/login" element={<Login />} />
           <Route path="/place-order" element={<PlaceOrder />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/track-order/:id" element={<TrackOrder />} />
+          <Route path="/profile" element={<Profile />} />
+
         </Routes>
       </ShopContextProvider>
       <Footer />

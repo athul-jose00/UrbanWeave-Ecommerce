@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
+
 const Collections = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -86,7 +87,7 @@ const Collections = () => {
         </div>
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-5  sm:grid-cols-1 lg:grid-cols-3">
         {filtered.length > 0 ? (
           filtered.map((product) => (
             <Link
