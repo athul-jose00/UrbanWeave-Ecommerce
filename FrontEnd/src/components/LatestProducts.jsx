@@ -22,15 +22,19 @@ const PrevArrow = (props) => (
 
 const LatestProducts = () => {
   const { products } = useContext(ShopContext);
+  const [latestProducts,setLatestProducts]=useState([]);
 
-  useEffect(() => {
-    
-  }, [products]);
+useEffect(()=>{
+  setLatestProducts( 
+    [...products].sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5));
+},[products])
+  
 
   const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 700,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
@@ -61,7 +65,7 @@ const LatestProducts = () => {
         </p>
 
         <Slider {...settings}>
-          {products.map((product) => (
+          {latestProducts.map((product) => (
             <div key={product._id} className="px-2">
               <Link to={`/product/${product._id}`}>
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:scale-105 group-hover:shadow-lg h-full">

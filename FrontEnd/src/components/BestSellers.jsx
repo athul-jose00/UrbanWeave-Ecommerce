@@ -26,9 +26,14 @@ const BestSellers = () => {
   const { products } = useContext(ShopContext);
 
   useEffect(() => {
-    
+    const fetchBestSellers = async () => {
+      
+      const bestSellers = products.filter((product) => product.bestseller);
+      //const firstThree = bestSellers.slice(0, 3);
+      setProducts(bestSellers);
+    };
 
-    
+    fetchBestSellers();
   }, [products]);
 
   const settings = {
