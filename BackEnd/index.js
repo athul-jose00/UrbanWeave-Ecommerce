@@ -50,4 +50,6 @@ app.get("/view", async (req, res) => {
   }
 });
 
-export default app;
+app.listen(port, () => {
+  console.log("Port is running at 3000");
+});
