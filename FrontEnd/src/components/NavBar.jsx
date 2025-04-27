@@ -195,49 +195,125 @@ const Navbar = () => {
       </Toolbar>
 
       {/* Mobile Navigation */}
-      {mobileMenuOpen && (
-        <Box
+      
+
+{mobileMenuOpen && (
+  <Box
+    sx={{
+      display: { md: "none" },
+      backgroundColor: "white",
+      boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
+      px: 2,
+      pt: 1,
+      pb: 3,
+    }}
+  >
+    {/* Navigation Links */}
+    {navLinks.map((item) => (
+      <Link
+        key={item.name}
+        to={item.path}
+        style={{ textDecoration: "none" }}
+        onClick={toggleMobileMenu}
+      >
+        <Button
+          fullWidth
           sx={{
-            display: { md: "none" },
-            backgroundColor: "white",
-            boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
-            px: 2,
-            pt: 1,
-            pb: 3,
+            justifyContent: "flex-start",
+            px: 3,
+            py: 1.5,
+            fontSize: "1rem",
+            fontWeight: 500,
+            color: "black",
+            backgroundColor:
+              location.pathname === item.path
+                ? "rgba(0,0,0,0.04)"
+                : "transparent",
+            "&:hover": {
+              backgroundColor: "rgba(0,0,0,0.04)",
+            },
+            textTransform: "capitalize",
           }}
         >
-          {navLinks.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              style={{ textDecoration: "none" }}
-              onClick={toggleMobileMenu}
-            >
-              <Button
-                fullWidth
-                sx={{
-                  justifyContent: "flex-start",
-                  px: 3,
-                  py: 1.5,
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  color: "black",
-                  backgroundColor:
-                    location.pathname === item.path
-                      ? "rgba(0,0,0,0.04)"
-                      : "transparent",
-                  "&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.04)",
-                  },
-                  textTransform: "capitalize",
-                }}
-              >
-                {item.name}
-              </Button>
-            </Link>
-          ))}
-        </Box>
-      )}
+          {item.name}
+        </Button>
+      </Link>
+    ))}
+
+    {/* Divider Line */}
+    {token && (
+      <Box
+        sx={{
+          borderTop: "1px solid #ccc",
+          my: 2,
+        }}
+      />
+    )}
+
+    {/* Profile Options */}
+    {token && (
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Link to="/profile" style={{ textDecoration: "none" }} onClick={toggleMobileMenu}>
+          <Button
+            fullWidth
+            sx={{
+              justifyContent: "flex-start",
+              px: 3,
+              py: 1.5,
+              fontSize: "1rem",
+              fontWeight: 500,
+              color: "black",
+              textTransform: "capitalize",
+              "&:hover": {
+                backgroundColor: "rgba(0,0,0,0.04)",
+              },
+            }}
+          >
+            My Profile
+          </Button>
+        </Link>
+        <Link to="/orders" style={{ textDecoration: "none" }} onClick={toggleMobileMenu}>
+          <Button
+            fullWidth
+            sx={{
+              justifyContent: "flex-start",
+              px: 3,
+              py: 1.5,
+              fontSize: "1rem",
+              fontWeight: 500,
+              color: "black",
+              textTransform: "capitalize",
+              "&:hover": {
+                backgroundColor: "rgba(0,0,0,0.04)",
+              },
+            }}
+          >
+            Orders
+          </Button>
+        </Link>
+        <Button
+          onClick={() => { logout(); toggleMobileMenu(); }}
+          fullWidth
+          sx={{
+            justifyContent: "flex-start",
+            px: 3,
+            py: 1.5,
+            fontSize: "1rem",
+            fontWeight: 500,
+            color: "black",
+            textTransform: "capitalize",
+            "&:hover": {
+              backgroundColor: "rgba(0,0,0,0.04)",
+            },
+          }}
+        >
+          Logout
+        </Button>
+      </Box>
+    )}
+  </Box>
+)}
+
     </AppBar>
   );
 };
