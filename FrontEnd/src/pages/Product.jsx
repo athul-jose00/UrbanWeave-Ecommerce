@@ -8,10 +8,8 @@ const Product = () => {
   
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState('');
-  const [selectedSize,setSelectedSize]=useState('');
-  const{addToCart,products}=useContext(ShopContext);
-
-  
+  const [selectedSize, setSelectedSize] = useState('');
+  const { addToCart, products } = useContext(ShopContext);
 
   useEffect(() => {
     const product = products.find((item) => item._id === productId);
@@ -31,10 +29,10 @@ const Product = () => {
 
   return (
     <section className="px-6 md:px-[7vw] py-16">
-      <div className="grid grid-cols-2 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Image Preview */}
         <div className="flex flex-col gap-4">
-          <div className="w-full h-[450px] overflow-hidden rounded-xl">
+          <div className="w-full h-[350px] md:h-[450px] overflow-hidden rounded-xl">
             <img
               src={image}
               alt={productData.name}
@@ -42,7 +40,7 @@ const Product = () => {
             />
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 overflow-x-auto">
             {productData.image.map((img, idx) => (
               <img
                 key={idx}
@@ -51,60 +49,58 @@ const Product = () => {
                 onClick={() => setImage(img)}
                 className={`w-20 h-20 object-cover rounded-xl cursor-pointer border ${
                   image === img ? "border-black" : "border-transparent"
-                } transition`}
+                } transition shrink-0`}
               />
             ))}
           </div>
         </div>
 
-       
-        <div className="flex flex-col justify-end h-full">
-  <h1 className="text-3xl font-semibold mb-6 text-black">
-    {productData.name}
-  </h1>
-  <p className="text-gray-600 mb-6 ml-1">
-    {productData.description || "This product is a blend of modern style and comfort, tailored for everyday wear."}
-  </p>
+        {/* Product Info */}
+        <div className="flex flex-col justify-start h-full">
+          <h1 className="text-2xl md:text-3xl font-semibold mb-4 md:mb-6 text-black">
+            {productData.name}
+          </h1>
 
-  {productData.sizes?.length > 0 && (
-          <div className="mb-6 ml-1">
-            <h4 className="text-lg font-semibold mb-2 text-black">Select Size</h4>
-            <div className="flex gap-3 flex-wrap">
-              {productData.sizes.map((size, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedSize(size)}
-                  className={`border px-4 py-2 rounded-full text-sm transition-all ease duration-300 ${
-                    selectedSize === size
-                      ? "border-black bg-black text-white"
-                      : "border-gray-300 hover:border-black"
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
+          <p className="text-gray-600 mb-4 md:mb-6">
+            {productData.description || "This product is a blend of modern style and comfort, tailored for everyday wear."}
+          </p>
+
+          {productData.sizes?.length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold mb-2 text-black">Select Size</h4>
+              <div className="flex gap-2 flex-wrap">
+                {productData.sizes.map((size, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedSize(size)}
+                    className={`border px-4 py-2 rounded-full text-sm transition-all ${
+                      selectedSize === size
+                        ? "border-black bg-black text-white"
+                        : "border-gray-300 hover:border-black"
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-  <p className="text-xl text-gray-800 font-small mb-6 ml-2">
-  <span>₹</span>
-  <span className='ml-1'>{productData.price.toLocaleString()}</span>
-  </p>
-  
+          )}
 
-  
+          <p className="text-xl text-gray-800 font-semibold mb-6">
+            <span className="text-2xl mr-1">₹</span>
+            {productData.price.toLocaleString()}
+          </p>
 
-  <div className="mt-3 mb-7">
-    <button onClick={()=>addToCart(productData._id,selectedSize)} className="bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition">
-      Add to Cart
-    </button>
-  </div>
-</div>
-
+          <button
+            onClick={() => addToCart(productData._id, selectedSize)}
+            className="bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition w-full md:w-auto"
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
     </section>
   );
 };
 
 export default Product;
-<span className='text-2xl text-grey-900 mr-1'>₹</span>
