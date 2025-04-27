@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext,useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ShopContext } from "../context/ShopContext";
 
 const NextArrow = (props) => (
   <div
@@ -20,15 +21,11 @@ const PrevArrow = (props) => (
 );
 
 const LatestProducts = () => {
-  const [products, setProducts] = useState([]);
+  const { products } = useContext(ShopContext);
 
   useEffect(() => {
-    const fetchLatestProducts = async () => {
-      const response = await axios.get("http://localhost:3000/view");
-      setProducts(response.data.slice(0, 6));
-    };
-    fetchLatestProducts();
-  }, []);
+    
+  }, [products]);
 
   const settings = {
     dots: false,
