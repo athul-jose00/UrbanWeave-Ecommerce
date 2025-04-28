@@ -13,7 +13,7 @@ const Hero = () => {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">
           Redefining Style<br />with UrbanWeave
         </h1>
-        <p className="text-lg sm:text-xl text-gray-700 mb-6 max-w-sm sm:max-w-md">
+        <p className="text-lg sm:text-xl text-gray-700 mb-6 max-w-sm sm:max-w-md ">
           Minimal. Bold. Timeless. Discover fashion that blends luxury with everyday comfort.
         </p>
         <Button

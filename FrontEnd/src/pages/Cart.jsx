@@ -8,15 +8,21 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 
 const Cart = () => {
-  const { cartItems, updateQty, navigate,products } = useContext(ShopContext);
+  const { cartItems, updateQty, navigate,backendURL } = useContext(ShopContext);
+  const [products, setProducts] = useState([]);
   const [cartData, setCartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const isCartEmpty = cartData.length === 0;
 
   useEffect(() => {
-    
-  }, [products]);
+    const fetchProducts = async () => {
+      const res = await axios.get(backendURL + "/view");
+      setProducts(res.data);
+      setIsLoading(false);
+    };
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     if (products.length > 0) {
