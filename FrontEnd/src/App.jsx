@@ -17,6 +17,9 @@ import Verify from "./pages/Verify";
 import TrackOrder from "./pages/TrackOrder";
 import Profile from "./pages/Profile";
 import Chatbot from "./components/Chatbot";
+import { motion } from 'framer-motion';
+import ScrollToTop from "./components/ScrollToTop";
+
 
 const App = () => {
   return (
@@ -34,7 +37,7 @@ pauseOnHover
 theme="light"
 transition={Bounce}
 />
-      
+      <ScrollToTop/>
       <ShopContextProvider>
       <NavBar />
       <Chatbot/>

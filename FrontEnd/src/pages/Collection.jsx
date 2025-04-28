@@ -40,7 +40,7 @@ const Collections = () => {
 
   return (
     <div className="px-6 md:px-[7vw] py-12 group">
-      <h1 className="text-4xl font-semibold mb-8 text-center">
+      <h1 className="text-4xl font-medium mb-8 text-center">
         Our Collection
         <span className="block h-1 w-36 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
       </h1>

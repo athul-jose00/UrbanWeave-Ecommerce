@@ -6,7 +6,7 @@ const About = () => {
   return (
     <div className="px-6 md:px-[7vw] py-12 text-gray-800 group">
       <div className="text-center mb-12">
-      <h1 className="text-4xl font-semibold mb-8 text-center mx-auto">
+      <h1 className="text-4xl font-medium mb-8 text-center mx-auto">
         About Us
         <span className="block h-1 w-22 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
       </h1>

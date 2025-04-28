@@ -83,7 +83,7 @@ const Orders = () => {
   return (
     <div className="min-h-screen bg-white px-5 md:px-[10vw] pt-14 pb-20 group">
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold mb-8 text-center">
+        <h1 className="text-3xl font-medium mb-8 text-center">
           My Orders
           <span className="block h-1 w-20 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
         </h1>

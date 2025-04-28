@@ -21,7 +21,11 @@ const Home = ({ token }) => {
           headers: { token },
         });
         if (res.data.success) {
+          console.log(res.data);
+          
           setSummary(res.data.data);
+          console.log(summary);
+          
         }
       } catch (err) {
         console.error("Error fetching summary:", err);
@@ -59,7 +63,7 @@ const Home = ({ token }) => {
       </div>
 
       <h2 className="text-2xl font-bold mb-4">Payment Status</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-17">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-17 mb-10">
         <SummaryCard
           icon={<FaCheckCircle size={28} />}
           label="Paid Orders"
@@ -72,6 +76,34 @@ const Home = ({ token }) => {
           value={summary?.paymentSummary?.pending || 0}
           color="bg-yellow-500"
         />
+      </div>
+
+      {/* New Section for Top Spenders */}
+      <h2 className="text-2xl font-bold mb-4">🏆 Top  Spenders</h2>
+      <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
+        {summary?.topSpenders && summary.topSpenders.length > 0 ? (
+          <div className="space-y-4">
+            {summary.topSpenders.map((user, index) => (
+              <div
+                key={user._id}
+                className="flex justify-between items-center p-4 bg-gray-700 rounded-xl"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="text-2xl font-bold">{index + 1}.</div>
+                  <div>
+                    <div className="font-semibold">{user.name}</div>
+                    <div className="text-gray-400 text-sm">{user.email}</div>
+                  </div>
+                </div>
+                <div className="text-lg font-bold text-green-400">
+                  ₹{user.totalSpent}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No data available for top spenders.</p>
+        )}
       </div>
     </div>
   );

@@ -184,7 +184,7 @@ const Chatbot = () => {
       </div>
 
       {isOpen && (
-        <div className="fixed bottom-20 right-8 z-50 w-80 bg-[#121212] text-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        <div className="fixed bottom-20 right-8 z-50 w-90 bg-[#121212]  text-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           style={{ height: "400px" }} 
         >
           <div className="p-4 text-lg font-bold bg-gray-900">

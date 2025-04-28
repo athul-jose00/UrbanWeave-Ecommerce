@@ -6,6 +6,8 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { motion } from 'framer-motion';
+
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

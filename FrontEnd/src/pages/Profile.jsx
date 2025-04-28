@@ -97,7 +97,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen px-5 md:px-[8vw] py-12 bg-gray-50 text-gray-800 group: ">
-      <h1 className="text-3xl font-semibold mb-9 text-center mx-auto">
+      <h1 className="text-3xl font-medium mb-9 text-center mx-auto">
         Profile
         <span className="block h-1 w-22 bg-gray-800 mt-1 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
       </h1>

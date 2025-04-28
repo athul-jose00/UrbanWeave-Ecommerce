@@ -57,7 +57,7 @@ const Product = () => {
 
         {/* Product Info */}
         <div className="flex flex-col justify-start h-full">
-          <h1 className="text-2xl md:text-3xl font-semibold mb-4 md:mb-6 text-black">
+          <h1 className="text-2xl md:text-3xl font-medium mb-4 md:mb-6 text-black">
             {productData.name}
           </h1>
 

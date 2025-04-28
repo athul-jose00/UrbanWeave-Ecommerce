@@ -61,7 +61,7 @@ const BestSellers = () => {
    return (
       <section className="py-8 px-4 md:px-[7vw]">
     <div className="group ">
-    <h2 className="text-4xl text-center font-semibold mb-3 ">
+    <h2 className="text-4xl text-center font-small mb-3 ">
       Best Sellers
       <span className="block h-1 w-30 bg-gray-800 mt-2 mx-auto  transition-transform duration-500 group-hover:scale-x-140  rounded-full" />
     </h2>

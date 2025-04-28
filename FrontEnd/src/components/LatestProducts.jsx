@@ -56,7 +56,7 @@ useEffect(()=>{
   return (
     <section className="py-8 px-4 md:px-[7vw] relative"> {/* Added relative positioning */}
       <div className="group">
-        <h2 className="text-4xl text-center font-semibold mb-3">
+        <h2 className="text-4xl text-center font-medium mb-3">
           Latest Arrivals
           <span className="block h-1 w-36 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-140 rounded-full" />
         </h2>
