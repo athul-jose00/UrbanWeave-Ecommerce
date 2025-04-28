@@ -48,6 +48,18 @@ const Chatbot = () => {
     setIsTyping(false);
     const lowerText = userText.toLowerCase();
 
+    //intro
+    if (
+      lowerText.includes("hello") ||
+      lowerText.includes("hi") ||
+      lowerText.includes("hey")
+    ) {
+      addBotMessage(
+        "Hello! 👋 I'm the UrbanWeave Assistant.\nI can help you with:\n• Tracking your orders 📦\n• Recommending trending products 👗🧥\n• Learning about UrbanWeave 🛍️\n• Contacting support 📞\n\nJust type what you need help with!"
+      );
+      return;
+    }
+
     // If bot is waiting for category
     if (awaitingCategory) {
       if (lowerText.includes("woman") || lowerText.includes("women") || lowerText === "w") {
@@ -111,13 +123,13 @@ const Chatbot = () => {
       }
     }
 
-    else if ((lowerText.includes("recommend")||lowerText.includes("suggest") )|| (lowerText.includes("bestseller")||lowerText.includes("best seller"))) {
+    else if ((lowerText.includes("recommend")||lowerText.includes("suggest") )|| (lowerText.includes("bestseller")||lowerText.includes("best seller"))||lowerText.includes("confused")) {
       if (lowerText.includes("woman") || lowerText.includes("women")) {
         recommendByCategory("Women");
       } else if (lowerText.includes("man") || lowerText.includes("men")) {
         recommendByCategory("Men");
       } else {
-        addBotMessage("Are you looking for Men or Women products?");
+        addBotMessage("Are you looking outfits for Men or Women?");
         setAwaitingCategory(true);
       }
     }
