@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const NavBar = ({setToken}) => {
   return (
     <div className="bg-gray-900 text-white flex items-center justify-between p-4 shadow-md relative">
-      <Link to="/home">
+      <Link to="/">
         <div className="flex items-center space-x-4 cursor-pointer group">
           <h1 className="text-xl font-bold tracking-wide relative ">
             UrbanWeave Admin Panal
