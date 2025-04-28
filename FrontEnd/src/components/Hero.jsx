@@ -6,14 +6,17 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const Hero = () => {
   return (
-    <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-[7vw] py-10 mt-[-30px] gap-12 md:gap-0 ">
+    <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-center px-6 md:px-[7vw] py-10 md:py-16 gap-8 md:gap-12">
       
-      {/* Left Side */}
-      <div className="w-full md:w-1/2 text-center md:text-left flex flex-col justify-center items-center md:items-start ">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">
-          Redefining Style<br />with UrbanWeave
+      {/* Left Side - Text Content */}
+      <div className="w-full md:w-1/2 text-center md:text-left flex flex-col justify-center items-center md:items-start ml-2">
+        <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold text-black mb-4 sm:mb-6 leading-tight">
+          Redefining Style with
         </h1>
-        <p className="text-lg sm:text-xl text-gray-700 mb-6 max-w-sm sm:max-w-md ">
+        <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold text-black mb-4 sm:mb-6 leading-tight -mt-4">
+          UrbanWeave
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-700 mb-6 max-w-sm sm:max-w-md">
           Minimal. Bold. Timeless. Discover fashion that blends luxury with everyday comfort.
         </p>
         <Button
@@ -34,9 +37,12 @@ const Hero = () => {
             display: "flex",
             alignItems: "center",
             gap: "0.5rem",
+            '&:hover': {
+              backgroundColor: "#333",
+            }
           }}
         >
-          <span className="flex items-center gap-2 transition-transform duration-300 group-hover:scale-110">
+          <span className="flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
             Explore Collection
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-2 text-2xl">
               <ArrowForwardIcon fontSize="inherit" />
@@ -45,15 +51,14 @@ const Hero = () => {
         </Button>
       </div>
 
-     
-      <div className="w-full  md:w-1/2 flex justify-end ">
+      {/* Right Side - Image (Offset on mobile) */}
+      <div className="w-full md:w-1/2 flex justify-center ml-8 md:ml-0">
         <img
           src={assets.hero_image}
           alt="Urban fashion"
-          className="w-[80%] sm:w-[70%] md:w-full max-w-md object-cover"
+          className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg object-cover"
         />
       </div>
-
     </section>
   );
 };
