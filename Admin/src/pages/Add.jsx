@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { assets } from "../assets/assets.js";
 import axios from "axios";
 import { backEndUrl } from "../App";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 const Add = ({ token }) => {
+  const { id } = useParams();
   const [image1, setImage1] = useState(false);
   const [image2, setImage2] = useState(false);
   const [image3, setImage3] = useState(false);
@@ -16,31 +18,70 @@ const Add = ({ token }) => {
   const [subCategory, setSubCategory] = useState("");
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("category", category);
-      formData.append("subCategory", subCategory);
-      formData.append("bestseller", bestseller);
-      formData.append("sizes", JSON.stringify(sizes));
-      image1 && formData.append("image1", image1);
-      image2 && formData.append("image2", image2);
-      image3 && formData.append("image3", image3);
-      image4 && formData.append("image4", image4);
+  useEffect(() => {
+    const fetchProdData = async () => {
+      if (id) {
+        try {
+          const res = await axios.post(`${backEndUrl}/api/product/single`, { pId: id });
+          const product = res.data.product;
+          setName(product.name);
+          setDecription(product.description);
+          setPrice(product.price);
+          setCategory(product.category);
+          setSubCategory(product.subCategory);
+          setBestseller(product.bestseller);
+          setSizes(product.sizes);
+          setExistingImages(product.image); // Array of image URLs
+        } catch (err) {
+          console.error("Failed to fetch product data", err);
+        }
+      }
+    };
+    fetchProdData();
+  }, [id]);
 
-      const response = await axios.post(
-        backEndUrl + "/api/product/add",
-        formData,
-        { headers: { token } }
-      );
+ const onSubmitHandler = async (e) => {
+  e.preventDefault();
+  try {
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("subCategory", subCategory);
+    formData.append("bestseller", bestseller);
+    formData.append("sizes", JSON.stringify(sizes));
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+    const updatedImages = [];
+
+    // Loop over image1–image4 (and their setters)
+    const images = [image1, image2, image3, image4];
+    for (let i = 0; i < 4; i++) {
+      if (images[i]) {
+        formData.append(`image${i + 1}`, images[i]); // send new image
+        updatedImages[i] = null; // backend will replace this slot
+      } else if (existingImages[i]) {
+        updatedImages[i] = existingImages[i]; // preserve old image
+      }
+    }
+
+    formData.append("existingImages", JSON.stringify(updatedImages)); // send preserved ones
+
+    const url = id
+      ? `${backEndUrl}/api/product/update/${id}`
+      : `${backEndUrl}/api/product/add`;
+
+    const response = await axios.post(url, formData, {
+      headers: { token },
+    });
+
+    if (response.data.success) {
+      toast.success(response.data.message);
+      if (!id) {
+        // Reset only if adding
         setName("");
         setDecription("");
         setImage1(false);
@@ -49,13 +90,18 @@ const Add = ({ token }) => {
         setImage4(false);
         setPrice("");
         setSubCategory("");
-      } else {
-        toast.error(response.data.message);
+        setSizes([]);
+        setBestseller(false);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      toast.error(response.data.message);
     }
-  };
+  } catch (error) {
+    console.log(error);
+    toast.error("An error occurred while saving the product.");
+  }
+};
+
 
   const toggleSize = (size) => {
     setSizes((prev) =>
@@ -71,75 +117,43 @@ const Add = ({ token }) => {
       className="w-full max-w-5xl mx-auto p-6 bg-gray-900 text-white rounded-2xl shadow-xl space-y-6"
     >
       <h1 className="text-4xl font-medium text-left text-white mb-8 underline underline-offset-8 decoration-purple-300">
-        Add a New Product
+        {id ? "Edit Product" : "Add a New Product"}
       </h1>
+
       <div>
         <h2 className="text-xl font-semibold mb-2">Upload Images</h2>
         <div className="flex gap-6 justify-center">
-          <label
-            htmlFor="image1"
-            className="w-48 h-48 border-2 border-dashed border-purple-400 rounded-lg cursor-pointer overflow-hidden"
-          >
-            <img
-              className="object-cover w-full h-full"
-              src={!image1 ? assets.upload_area : URL.createObjectURL(image1)}
-              alt=""
-            />
-            <input
-              onChange={(e) => setImage1(e.target.files[0])}
-              type="file"
-              id="image1"
-              hidden
-            />
-          </label>
-          <label
-            htmlFor="image2"
-            className="w-48 h-48 border-2 border-dashed border-purple-400 rounded-lg cursor-pointer overflow-hidden"
-          >
-            <img
-              className="object-cover w-full h-full"
-              src={!image2 ? assets.upload_area : URL.createObjectURL(image2)}
-              alt=""
-            />
-            <input
-              onChange={(e) => setImage2(e.target.files[0])}
-              type="file"
-              id="image2"
-              hidden
-            />
-          </label>
-          <label
-            htmlFor="image3"
-            className="w-48 h-48 border-2 border-dashed border-purple-400 rounded-lg cursor-pointer overflow-hidden"
-          >
-            <img
-              className="object-cover w-full h-full"
-              src={!image3 ? assets.upload_area : URL.createObjectURL(image3)}
-              alt=""
-            />
-            <input
-              onChange={(e) => setImage3(e.target.files[0])}
-              type="file"
-              id="image3"
-              hidden
-            />
-          </label>
-          <label
-            htmlFor="image4"
-            className="w-48 h-48 border-2 border-dashed border-purple-400 rounded-lg cursor-pointer overflow-hidden"
-          >
-            <img
-              className="object-cover w-full h-full"
-              src={!image4 ? assets.upload_area : URL.createObjectURL(image4)}
-              alt=""
-            />
-            <input
-              onChange={(e) => setImage4(e.target.files[0])}
-              type="file"
-              id="image4"
-              hidden
-            />
-          </label>
+          {[1, 2, 3, 4].map((imgNum, index) => {
+            const imageState = [image1, image2, image3, image4][index];
+            const setImage = [setImage1, setImage2, setImage3, setImage4][index];
+            const existingImage = existingImages[index];
+
+            return (
+              <label
+                key={imgNum}
+                htmlFor={`image${imgNum}`}
+                className="w-48 h-48 border-2 border-dashed border-purple-400 rounded-lg cursor-pointer overflow-hidden"
+              >
+                <img
+                  className="object-cover w-full h-full"
+                  src={
+                    imageState
+                      ? URL.createObjectURL(imageState)
+                      : existingImage
+                      ? existingImage
+                      : assets.upload_area
+                  }
+                  alt=""
+                />
+                <input
+                  onChange={(e) => setImage(e.target.files[0])}
+                  type="file"
+                  id={`image${imgNum}`}
+                  hidden
+                />
+              </label>
+            );
+          })}
         </div>
       </div>
 
@@ -212,10 +226,10 @@ const Add = ({ token }) => {
               onClick={() => toggleSize(size)}
               className={`px-4 py-2 rounded-full cursor-pointer text-sm font-medium border
                  border-purple-200 ${
-                sizes.includes(size)
-                  ? "bg-pink-500 text-white"
-                  : "bg-gray-700 text-gray-300"
-              }`}
+                   sizes.includes(size)
+                     ? "bg-pink-500 text-white"
+                     : "bg-gray-700 text-gray-300"
+                 }`}
             >
               {size}
             </div>
@@ -239,7 +253,7 @@ const Add = ({ token }) => {
         type="submit"
         className="bg-pink-600 hover:bg-pink-700 transition duration-200 text-white py-2 px-6 rounded-lg font-semibold"
       >
-        Add Product
+        {id ? "Update Product" : "Add Product"}
       </button>
     </form>
   );

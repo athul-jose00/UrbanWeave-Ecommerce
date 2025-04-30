@@ -78,7 +78,7 @@ const Home = ({ token }) => {
         />
       </div>
 
-      {/* New Section for Top Spenders */}
+      
       <h2 className="text-2xl font-bold mb-4">🏆 Top  Spenders</h2>
       <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
         {summary?.topSpenders && summary.topSpenders.length > 0 ? (

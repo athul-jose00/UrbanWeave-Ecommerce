@@ -16,7 +16,6 @@ export const getAdminSummary = async (req, res) => {
     const paid = await orderModel.countDocuments({ payment: true });
     const pending = await orderModel.countDocuments({ payment: false });
 
-    // 🆕 Find Top 3 Spenders
     const topSpendersData = await orderModel.aggregate([
       { $match: { payment: true } },
       {
