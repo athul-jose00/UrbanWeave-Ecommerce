@@ -23,9 +23,8 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Web3Forms API endpoint and your unique API key
     const endpoint = "https://api.web3forms.com/submit";
-    const apiKey = "4c3eb705-184f-47cb-b919-40f7d6db2515"; // Your Web3Forms API key
+    const apiKey = "4c3eb705-184f-47cb-b919-40f7d6db2515";
 
     const formDataToSend = {
       name: formData.name,
@@ -44,28 +43,30 @@ const Contact = () => {
 
       if (response.data.success) {
         toast.success("Message sent successfully! We'll get back to you soon.");
-        setFormData({ name: "", email: "", message: "" }); 
+        setFormData({ name: "", email: "", message: "" });
       } else {
         toast.error("Oops! Something went wrong. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
       console.log(error);
-    } 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="px-6 md:px-[7vw] py-12 text-gray-800 group">
-      <h1 className="text-4xl font-medium mb-8 text-center mx-auto">
+    <div className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 text-gray-800 group max-w-7xl mx-auto">
+      <h1 className="text-3xl sm:text-4xl font-semibold mb-10 text-center">
         Contact Us
-        <span className="block h-1 w-22 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
+        <span className="block h-1 w-20 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
       </h1>
 
-      <div className="flex flex-col-reverse md:flex-row gap-12 items-center">
+      <div className="flex flex-col-reverse lg:flex-row gap-10 lg:gap-16 items-center">
         {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
-          className="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-md"
+          className="w-full lg:w-1/2 bg-white p-6 sm:p-8 rounded-xl shadow-md"
         >
           <div className="mb-4">
             <label className="block mb-1 font-medium">Name</label>
@@ -95,7 +96,7 @@ const Contact = () => {
             <label className="block mb-1 font-medium">Message</label>
             <textarea
               name="message"
-              rows='4'
+              rows="4"
               required
               value={formData.message}
               onChange={handleChange}
@@ -106,24 +107,23 @@ const Contact = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-gray-900 text-white px-6 py-2 rounded-full cursor-pointer"
+            className="bg-gray-900 text-white px-6 py-2 rounded-full w-full sm:w-auto"
           >
             {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
 
         {/* Illustration / Info */}
-        <div className="w-1/2 text-center md:text-left">
+        <div className="w-full lg:w-1/2 text-center lg:text-left">
           <img
             src="https://media.istockphoto.com/id/1497793104/photo/contact-us-concept-male-hand-draws-a-line-under-the-word-contact-us-on-yellow-background.jpg?s=612x612&w=0&k=20&c=xBTPhLTvrMnlCXJ_VNfa4FFBCPXJ75hVVbgyYZIT1B0="
             alt="Contact Illustration"
-            className="rounded-lg shadow-md mb-6 w-full h-50 object-cover"
+            className="rounded-lg shadow-md mb-6 w-full h-auto object-cover max-h-72"
           />
-          <p className="text-gray-600">
-            Got a question, suggestion, or just want to say hello? We'd love to hear from you!
-            Drop us a message and our team will get back to you as soon as possible.
+          <p className="text-gray-600 text-base sm:text-lg">
+            Got a question, suggestion, or just want to say hello? We'd love to hear from you! Drop us a message and our team will get back to you as soon as possible.
           </p>
-          <div className="mt-4 text-gray-700">
+          <div className="mt-4 text-gray-700 text-sm sm:text-base space-y-1">
             <p><strong>Email:</strong> support@urbanweave.com</p>
             <p><strong>Phone:</strong> +91 98765 43210</p>
             <p><strong>Location:</strong> Bangalore, India</p>
@@ -131,7 +131,6 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Toast Notifications */}
       <ToastContainer />
     </div>
   );

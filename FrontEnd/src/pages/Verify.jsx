@@ -7,7 +7,6 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 import styled, { keyframes } from 'styled-components';
 
-// Animation for checkmark
 const checkmarkAnimation = keyframes`
   0% {
     transform: scale(0.8);
@@ -72,10 +71,14 @@ const Verify = () => {
   };
 
   useEffect(() => {
-    verifyPayment();
+    
+    const delayBeforeVerification = setTimeout(() => {
+      verifyPayment();
+    }, 2000);
+
+    return () => clearTimeout(delayBeforeVerification);
   }, [token]);
 
-  // Prevent flash of content by showing nothing during initial load
   if (initialLoad) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
