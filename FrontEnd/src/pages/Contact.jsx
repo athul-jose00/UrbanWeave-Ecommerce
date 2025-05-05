@@ -57,7 +57,7 @@ const Contact = () => {
 
   return (
     <div className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 text-gray-800 group max-w-7xl mx-auto">
-      <h1 className="text-3xl sm:text-4xl font-semibold mb-10 text-center">
+      <h1 className="text-3xl sm:text-4xl font-medium mb-10 text-center">
         Contact Us
         <span className="block h-1 w-20 bg-gray-800 mt-2 mx-auto transition-transform duration-500 group-hover:scale-x-150 rounded-full" />
       </h1>
