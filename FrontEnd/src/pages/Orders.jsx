@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Orders = () => {
   const { backendURL, token } = useContext(ShopContext);
@@ -30,7 +31,6 @@ const Orders = () => {
           });
         });
 
-        // FILTER: only keep items that are NOT delivered
         const notDeliveredItems = allOrderItems.filter(
           (item) => item.status !== "Delivered"
         );
@@ -39,6 +39,32 @@ const Orders = () => {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      const confirm = window.confirm(
+        "Are you sure you want to delete this order?"
+      );
+      if (!confirm) return;
+
+      const response = await axios.delete(
+        `${backendURL}/api/order/delete/${orderId}`,
+        {
+          headers: { token },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Order deleted successfully");
+        loadOrderData();
+      } else {
+        toast.error("Failed to delete order");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong while deleting the order");
     }
   };
 
@@ -110,46 +136,63 @@ const Orders = () => {
                 </h2>
                 <div className="flex flex-wrap text-sm text-gray-600 leading-tight">
                   <p className="mr-4 py-1">
-                    <span className="font-semibold text-gray-800">Price:</span> ₹
-                    {item.price.toLocaleString()}
+                    <span className="font-semibold text-gray-800">Price:</span>{" "}
+                    ₹{item.price.toLocaleString()}
                   </p>
                   <p className="mr-40 py-1">
                     <span className="font-semibold text-gray-800">Size:</span>{" "}
                     {item.size}
                   </p>
-                  <p className="mr-4 py-1 mt-1">
-                    <span className="font-semibold text-gray-800">Quantity:</span>{" "}
+                  <p className="mr-3 py-1 mt-1">
+                    <span className="font-semibold text-gray-800">
+                      Quantity:
+                    </span>{" "}
                     {item.quantity}
                   </p>
                   <p className="py-1 mt-1">
-                    <span className="font-semibold text-gray-800">Ordered on:</span>{" "}
+                    <span className="font-semibold text-gray-800">
+                      Ordered on:
+                    </span>{" "}
                     {new Date(item.date).toDateString()}
                   </p>
-                  <p className="py-2">
-                    <span className="font-semibold text-gray-800">
+                  
+                </div>
+                <p className="py-2">
+                    <span className="font-semibold text-sm text-gray-800">
                       Payment Method:
                     </span>{" "}
                     {item.paymentMethod}
                   </p>
-                </div>
               </div>
 
               <div
-                className={`flex flex-col items-center text-sm font-medium md:w-1/6 ${getTextColor(item.status)}`}
+                className={`flex flex-col items-center text-sm font-medium md:w-1/6 ${getTextColor(
+                  item.status
+                )}`}
               >
-                <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${getDotColor(item.status)}`} />
+                <div className="flex items-center gap-2 mb-7">
+                  <div
+                    className={`w-2 h-2 rounded-full ${getDotColor(
+                      item.status
+                    )}`}
+                  />
                   {item.status}
                 </div>
               </div>
 
-              <div className="md:w-1/6 flex justify-end w-full">
+              <div className="sm:w-1/6 m:w-full flex justify-end items-center gap-2 flex-wrap mb-7 sm:flex-nowrap">
                 <Link
                   to={`/track-order/${item.orderId}`}
                   className="text-sm px-4 py-2 rounded-full border border-gray-300 text-gray-800 hover:bg-gray-100 transition duration-200"
                 >
                   Track Order
                 </Link>
+                <button
+                  onClick={() => handleDeleteOrder(item.orderId)}
+                  className="text-sm px-4 py-2 rounded-full border border-red-300 text-red-600 hover:bg-red-100 transition duration-200"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))

@@ -195,5 +195,34 @@ const getOrderById = async (req, res) => {
 };
 
 
+const deleteOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.userId;
 
-export { placeOrder, placeOrderStripe, allOrders, userOrders, updateStatus,verifyStripe,getOrderById}
+  try {
+    const order = await orderModel.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    if (order.userId.toString() !== userId) {
+      return res.status(403).json({ success: false, message: "Not authorized to delete this order" });
+    }
+
+    if (order.status === "Delivered") {
+      return res.status(400).json({ success: false, message: "Delivered orders cannot be deleted" });
+    }
+
+    await orderModel.findByIdAndDelete(orderId);
+
+    res.json({ success: true, message: "Order deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
+export { placeOrder, placeOrderStripe, allOrders, userOrders, updateStatus,verifyStripe,getOrderById,deleteOrder}
