@@ -101,7 +101,7 @@ const registerUser = async (req, res) => {
     const user = await newUser.save();
 
     // Send verification email
-    const verificationUrl = `${process.env.BASE_URL}/api/user/verify-email?token=${verificationToken}`;
+    const verificationUrl = `${process.env.BASE_URL}api/user/verify-email?token=${verificationToken}`;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -164,7 +164,7 @@ const verifyEmail = async (req, res) => {
     const authToken = createToken(user._id);
 
     res.redirect(
-      `${process.env.BASE_URL}/login?verified=true&message=${encodeURIComponent(
+      `https://urban-weave-front-end.vercel.app/login?verified=true&message=${encodeURIComponent(
         "Email verified successfully! Please log in."
       )}`
     );
