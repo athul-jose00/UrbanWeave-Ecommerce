@@ -164,7 +164,7 @@ const verifyEmail = async (req, res) => {
     const authToken = createToken(user._id);
 
     res.redirect(
-      `http://localhost:5173/login?verified=true&message=${encodeURIComponent(
+      `${process.env.BASE_URL}/login?verified=true&message=${encodeURIComponent(
         "Email verified successfully! Please log in."
       )}`
     );
@@ -263,7 +263,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 /*
 const addProfileImg = async (req, res) => {
   try {
@@ -297,10 +296,6 @@ console.log("User ID:", req.body.userId);
   }
 };
 */
-
-
-
-
 
 const addProfileImg = async (req, res) => {
   try {
@@ -343,11 +338,6 @@ const addProfileImg = async (req, res) => {
   }
 };
 
-
-
-
-
-
 const getUserDetails = async (req, res) => {
   try {
     const user = await userModel.findById(req.userId).select("-password");
@@ -365,20 +355,23 @@ const getUserDetails = async (req, res) => {
   }
 };
 
-
 export const getUserDashboard = async (req, res) => {
   try {
     const user = await userModel.findById(req.userId).select("-password");
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // Fetch delivered orders only
-    const deliveredOrders = await orderModel.find({
-      userId: req.userId,
-      status: "Delivered",
-    }).sort({ date: -1 });
+    const deliveredOrders = await orderModel
+      .find({
+        userId: req.userId,
+        status: "Delivered",
+      })
+      .sort({ date: -1 });
 
     res.status(200).json({
       success: true,
@@ -398,9 +391,6 @@ export const getUserDashboard = async (req, res) => {
   }
 };
 
-
-
-
 export {
   loginUser,
   registerUser,
@@ -411,6 +401,5 @@ export {
   updateUser,
   deleteUser,
   addProfileImg,
-  getUserDetails
-  
+  getUserDetails,
 };
