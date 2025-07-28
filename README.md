@@ -255,7 +255,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Athul Jose** - _Initial work_ - [YourGitHub](https://github.com/athul-jose00)
+- [**Athul Jose**](https://github.com/athul-jose00)
 
 ---
 
