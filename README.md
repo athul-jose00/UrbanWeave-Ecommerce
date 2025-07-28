@@ -42,7 +42,7 @@
 - **Shopping Cart** - Add, remove, and manage items with real-time updates
 - **Order Management** - Track orders from placement to delivery
 - **Payment Integration** - Secure payments via Stripe and Razorpay
-- **AI Chatbot Support** - Intelligent customer support with real-time assistance
+- **Chatbot Support** - Intelligent customer chatbot that helps users with info about the website as well as to track orders
 - **Responsive Design** - Optimized for desktop, tablet, and mobile devices
 
 ### 🔧 **Admin Dashboard**
