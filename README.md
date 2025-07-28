@@ -255,7 +255,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Your Name** - _Initial work_ - [YourGitHub](https://github.com/yourusername)
+- **Athul Jose** - _Initial work_ - [YourGitHub](https://github.com/athul-jose00)
 
 ---
 
