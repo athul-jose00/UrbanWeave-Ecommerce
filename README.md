@@ -286,13 +286,13 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - MongoDB for the flexible database solution
 - Stripe & Razorpay for secure payment processing
 - Cloudinary for image management services
-- All open-source contributors who made this project possible
+
 
 ---
 
 <div align="center">
-  <p>Made with ❤️ for the fashion community</p>
+  https://github.com/athul-jose00/UrbanWeave-Ecommerce
   
-  [![GitHub stars](https://img.shields.io/github/stars/yourusername/urbanweave-ecommerce?style=social)](https://github.com/yourusername/urbanweave-ecommerce/stargazers)
-  [![GitHub forks](https://img.shields.io/github/forks/yourusername/urbanweave-ecommerce?style=social)](https://github.com/yourusername/urbanweave-ecommerce/network/members)
+  [![GitHub stars](https://img.shields.io/github/stars/athul-jose00/UrbanWeave-Ecommerce?style=social)](https://github.com/athul-jose00/UrbanWeave-Ecommerce/stargazers)
+  [![GitHub forks](https://img.shields.io/github/forks/athul-jose00/UrbanWeave-Ecommerce?style=social)](https://github.com/athul-jose00/UrbanWeave-Ecommerce/network/members)
 </div>
