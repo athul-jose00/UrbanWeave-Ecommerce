@@ -3,17 +3,26 @@
   <p><strong>Modern Full-Stack Fashion E-Commerce Platform</strong></p>
   
   <p>A sophisticated fashion e-commerce web application built with the MERN stack, featuring seamless user experience, secure payments, and comprehensive admin management.</p>
+</div>
+
+---
 
 ## 🌐 Live Demo
 
-  <div align="center">
-    <a href="https://urban-weave-front-end.vercel.app/" target="_blank">
-      <img src="https://img.shields.io/badge/🛍️_Live_Website-4F46E5?style=for-the-badge&logoColor=white" alt="Live Website"/>
-    </a>
-    <a href="https://urban-weave-admin.vercel.app/" target="_blank">
-      <img src="https://img.shields.io/badge/⚙️_Admin_Dashboard-DC2626?style=for-the-badge&logoColor=white" alt="Admin Dashboard"/>
-    </a>
-  </div>
+<div align="center">
+  <a href="https://urban-weave-front-end.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🛍️_Live_Website-4F46E5?style=for-the-badge&logoColor=white" alt="Live Website"/>
+  </a>
+  <a href="https://urban-weave-admin.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/⚙️_Admin_Dashboard-DC2626?style=for-the-badge&logoColor=white" alt="Admin Dashboard"/>
+  </a>
+</div>
+
+---
+
+## 🛠️ Tech Stack
+
+<div align="center">
 
 ![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white)
@@ -33,6 +42,7 @@
 - **Shopping Cart** - Add, remove, and manage items with real-time updates
 - **Order Management** - Track orders from placement to delivery
 - **Payment Integration** - Secure payments via Stripe and Razorpay
+- **AI Chatbot Support** - Intelligent customer support with real-time assistance
 - **Responsive Design** - Optimized for desktop, tablet, and mobile devices
 
 ### 🔧 **Admin Dashboard**
@@ -281,7 +291,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
- 
+  <p>Made with ❤️ for the fashion community</p>
   
   [![GitHub stars](https://img.shields.io/github/stars/yourusername/urbanweave-ecommerce?style=social)](https://github.com/yourusername/urbanweave-ecommerce/stargazers)
   [![GitHub forks](https://img.shields.io/github/forks/yourusername/urbanweave-ecommerce?style=social)](https://github.com/yourusername/urbanweave-ecommerce/network/members)
