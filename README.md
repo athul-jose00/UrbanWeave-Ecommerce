@@ -4,6 +4,17 @@
   
   <p>A sophisticated fashion e-commerce web application built with the MERN stack, featuring seamless user experience, secure payments, and comprehensive admin management.</p>
 
+## 🌐 Live Demo
+
+  <div align="center">
+    <a href="https://urban-weave-front-end.vercel.app/" target="_blank">
+      <img src="https://img.shields.io/badge/🛍️_Live_Website-4F46E5?style=for-the-badge&logoColor=white" alt="Live Website"/>
+    </a>
+    <a href="https://urban-weave-admin.vercel.app/" target="_blank">
+      <img src="https://img.shields.io/badge/⚙️_Admin_Dashboard-DC2626?style=for-the-badge&logoColor=white" alt="Admin Dashboard"/>
+    </a>
+  </div>
+
 ![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -153,10 +164,10 @@ VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ## 📱 Screenshots
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Homepage+Preview" alt="Homepage" width="400"/>
-  <img src="https://via.placeholder.com/800x400/059669/FFFFFF?text=Product+Page" alt="Product Page" width="400"/>
-  <img src="https://via.placeholder.com/800x400/DC2626/FFFFFF?text=Admin+Dashboard" alt="Admin Dashboard" width="400"/>
-  <img src="https://via.placeholder.com/800x400/7C3AED/FFFFFF?text=Shopping+Cart" alt="Shopping Cart" width="400"/>
+  <img src="https://res.cloudinary.com/dgjmysmh7/image/upload/v1753722389/Screenshot_2025-07-28_223553_qyvfvy.png" alt="UrbanWeave Homepage" width="400"/>
+  <img src="https://res.cloudinary.com/dgjmysmh7/image/upload/v1753722443/Screenshot_2025-07-28_223702_quk6ut.png" alt="Product Page" width="400"/>
+  <img src="https://res.cloudinary.com/dgjmysmh7/image/upload/v1753722477/Screenshot_2025-07-28_223744_zuiyaw.png" alt="Admin Dashboard" width="400"/>
+  <img src="https://res.cloudinary.com/dgjmysmh7/image/upload/v1753722560/Screenshot_2025-07-28_223908_gssbxs.png" alt="Shopping Cart" width="400"/>
 </div>
 
 ---
@@ -270,7 +281,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  <p>Made with ❤️ for the fashion community</p>
+ 
   
   [![GitHub stars](https://img.shields.io/github/stars/yourusername/urbanweave-ecommerce?style=social)](https://github.com/yourusername/urbanweave-ecommerce/stargazers)
   [![GitHub forks](https://img.shields.io/github/forks/yourusername/urbanweave-ecommerce?style=social)](https://github.com/yourusername/urbanweave-ecommerce/network/members)
