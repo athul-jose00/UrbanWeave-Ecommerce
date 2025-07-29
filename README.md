@@ -100,8 +100,8 @@ UrbanWeave/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/urbanweave-ecommerce.git
-   cd urbanweave-ecommerce
+   git clone https://github.com/athul-jose00/UrbanWeave-Ecommerce.git
+   cd UrbanWeave-Ecommerce
    ```
 
 2. **Backend Setup**
